@@ -6,7 +6,7 @@
  * Version: 1.0.0
  * Author: Roots
  * Author URI: http://roots.io/
- * License: MIT License 
+ * License: MIT License
  */
 
 namespace Roots\Bedrock;
@@ -23,15 +23,15 @@ class Autoloader {
   private static $_single; // Let's make this a singleton.
 
   function __construct() {
-    if (!isset(self::$_single)) {
-      self::$_single       = $this; // Singleton set.
-      self::$relative_path = '/../' . basename(__DIR__); // Rel path set.
+    if (isset(self::$_single)) { return; }
 
-      add_action('plugins_loaded', array($this, 'load_plugins'), 0); // Always add filter to autoload.
+    self::$_single       = $this; // Singleton set.
+    self::$relative_path = '/../' . basename(__DIR__); // Rel path set.
 
-      if (is_admin()) {
-        add_filter('show_advanced_plugins', array($this, 'show_in_admin'), 0, 2); // Admin only filter.
-      }
+    add_action('plugins_loaded', array($this, 'load_plugins'), 0); // Always add filter to autoload.
+
+    if (is_admin()) {
+      add_filter('show_advanced_plugins', array($this, 'show_in_admin'), 0, 2); // Admin only filter.
     }
   }
 
@@ -64,9 +64,10 @@ class Autoloader {
 
     $this->update_cache(); // May as well update the transient cache whilst here.
 
-    foreach (self::$auto_plugins as &$auto_plugin) {
-      $auto_plugin['Name'] .= ' *'; // adds the asterisk
-    }
+    self::$auto_plugins = array_map(function ($auto_plugin) {
+      $auto_plugin['Name'] .= ' *';
+      return $auto_plugin;
+    }, self::$auto_plugins);
 
     $plugins['mustuse'] = array_unique(array_merge(self::$auto_plugins, self::$mu_plugins), SORT_REGULAR);
 
@@ -78,6 +79,7 @@ class Autoloader {
    */
   private function check_cache() {
     $cache = get_site_option('bedrock_autoloader');
+
     if ($cache == false) {
       return $this->update_cache();
     }
@@ -88,7 +90,7 @@ class Autoloader {
   /**
    * Get the plugins and mu-plugins from the mu-plugin path and remove duplicates.
    * Check cache against current plugins for newly activated plugins.
-   * After that, we can update the cache. 
+   * After that, we can update the cache.
    */
   private function update_cache() {
     require_once(ABSPATH . 'wp-admin/includes/plugin.php');
@@ -104,15 +106,15 @@ class Autoloader {
   }
 
   /**
-   * This accounts for the plugin hooks that would run if the plugins were 
+   * This accounts for the plugin hooks that would run if the plugins were
    * loaded as usual. Plugins are removed by deletion, so there's no way
    * to deactivate or uninstall.
    */
   private function plugin_hooks() {
-    if (is_array(self::$activated)) {
-      foreach (self::$activated as $plugin_file => $plugin_info) {
-        do_action('activate_' . $plugin_file);
-      }
+    if (!is_array(self::$activated)) { return; }
+
+    foreach (self::$activated as $plugin_file => $plugin_info) {
+      do_action('activate_' . $plugin_file);
     }
   }
 
@@ -133,10 +135,11 @@ class Autoloader {
    * mu-plugins dir. If it's more or less than last time, update the cache.
    */
   private function count_plugins() {
-    if (isset(self::$count)) return self::$count;
+    if (isset(self::$count)) { return self::$count; }
 
-    $count = count(glob(WPMU_PLUGIN_DIR . '/*/', GLOB_ONLYDIR | GLOB_NOSORT)); 
-    if ( !isset(self::$cache['count']) || $count != self::$cache['count']) {
+    $count = count(glob(WPMU_PLUGIN_DIR . '/*/', GLOB_ONLYDIR | GLOB_NOSORT));
+
+    if (!isset(self::$cache['count']) || $count != self::$cache['count']) {
       self::$count = $count;
       $this->update_cache();
     }
