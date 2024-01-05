@@ -1,7 +1,8 @@
 repo_name: qutek/bedrock
 report_id: 59f7112bb586c69bac567f69cefac80d
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-14T15:36:20+00:00'
+timestamp: '2024-01-05T08:43:46+00:00'
 requested_by: swalkinshaw
 provider: github
 branch: master
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/991/hwUcGZ41_400x400.jpg
+  detection_source_url: https://github.com/qutek/bedrock
   detection_source: Repo Metadata
 - name: Ruby
   description: A dynamic, interpreted, open source programming language with a focus
@@ -26,6 +28,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/989/ruby.png
+  detection_source_url: https://github.com/qutek/bedrock
   detection_source: Repo Metadata
 - name: Capistrano
   description: A remote server automation and deployment tool written in Ruby
@@ -37,7 +40,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Server Configuration and Automation
   image_url: https://img.stackshare.io/service/661/5da4e1d78e930197cb7dc002ceafdfda.png
-  detection_source_url: Gemfile.lock
+  detection_source_url: https://github.com/qutek/bedrock/blob/master/Gemfile.lock
   detection_source: Gemfile
   last_updated_by: Scott Walkinshaw
   last_updated_on: 2014-07-01 17:54:36.000000000 Z
@@ -49,6 +52,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/qutek/bedrock
   detection_source: Repo Metadata
 - name: RubyGems
   description: Easily download, install, and use ruby software packages on your system
@@ -58,6 +62,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/service/12795/5jL6-BA5_400x400.jpeg
+  detection_source_url: https://github.com/qutek/bedrock/blob/master/Gemfile
   detection_source: Gemfile
   last_updated_by: Scott Walkinshaw
   last_updated_on: 2013-12-18 00:47:11.000000000 Z
@@ -70,4 +75,5 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png
+  detection_source_url: https://github.com/qutek/bedrock
   detection_source: Repo Metadata
